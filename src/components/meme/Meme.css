@@ -1,0 +1,17 @@
+.meme {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  display: inline-block;
+}
+
+.meme-img {
+  width: auto;
+  height: 100%;
+  max-width: 200px;
+  object-fit: cover;
+}
+
+.meme-title {
+  max-width: fit-content;
+  font-size: 16px;
+}

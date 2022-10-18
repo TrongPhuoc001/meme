@@ -1,24 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { getMemes } from "./api/meme";
+import "./App.css";
+import { MemeGallery } from "./components/memeGallery/MemeGallery";
+import { MemeInterface } from "./types/meme";
+
+const getMemesData = (setMemes: Dispatch<SetStateAction<MemeInterface[]>>) => {
+  getMemes().then((data) => {
+    setMemes(data);
+  });
+};
 
 function App() {
+  const [memesOnloaded, setMemesOnloaded] = useState<MemeInterface[]>([]);
+  const [memesOnClick, setMemesOnClick] = useState<MemeInterface[]>([]);
+
+  useEffect(() => {
+    getMemesData(setMemesOnloaded);
+  }, []);
+
+  const handleButtonClicked = () => {
+    getMemesData(setMemesOnClick);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <div className="section">
+        <h1>Onloaded</h1>
+        <MemeGallery memes={memesOnloaded} />
+      </div>
+      <div className="section">
+        <div className="flex">
+          <h1>On button clicked</h1>
+          <button className="button" onClick={handleButtonClicked}>
+            Load memes
+          </button>
+        </div>
+        <MemeGallery memes={memesOnClick} />
+      </div>
     </div>
   );
 }
